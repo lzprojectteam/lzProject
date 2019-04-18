@@ -45,9 +45,9 @@ new Vue({
         else if (getToken()) {
             console.log('检测到令牌');
             //如果token有效，获取跳转界面，然后跳转界面
-            let user = getUser();
+            // let user = getUser();
             this.bindDing();
-            this.loadSystem(user);
+            // this.loadSystem(user);
             window.location.href = '/tobacco';
         } else {
             //如果token不存在，则跳转到登陆界面
@@ -65,10 +65,6 @@ new Vue({
                     } else {
                         apiUser.getToken().then(response => {
                             setToken(response.token);
-                            // setUser(res);
-                            set('userInfo', JSON.stringify(res));
-                            console.log(res);
-
                             window.location.href = '/tobacco';
                         });
                     }

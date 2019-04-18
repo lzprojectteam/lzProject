@@ -17,11 +17,7 @@ export default {
     this.$emit("bindActive", to.path);
     next();
   },
-  computed: {
-    userInfo() {
-      return JSON.parse(get("userInfo"));
-    }
-  },
+  computed: {},
   components: {},
   methods: {
     onUnbindClick() {}

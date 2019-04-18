@@ -23,8 +23,8 @@
 
 <script lang="ts">
 import { setUser, getUser, setFiled } from "@/utils/userUtils";
-import { setToken } from "@/utils/cookieUtils";
 import Vue from "vue";
+import { set, getToken, setToken } from "@/utils/cookieUtils";
 import { default as apiUser } from "@/api/base/apiUser";
 import app from "@/store/modules/core/app";
 import { getModule } from "vuex-module-decorators";
@@ -70,19 +70,13 @@ export default Vue.extend({
         .loginByUserName(this.username, this.password)
         .then((response: any) => {
           let user = getUser();
-          // user.remember = that.remember;
-          // if (this.remember) {
-          //   user.username = that.username;
-          // } else {
-          //   user.username = "";
-          // }
-          setUser(user);
           setToken(response.token);
           apiUser.getUserDetail("8003").then(userInfo => {
+            setUser(userInfo);
+            let userInfos = getUser();
             apiSsoUser
               .binding(userInfo.id, "00000")
               .then(res => {
-                alert(3);
                 console.log(res);
                 if (res !== null) {
                   window.location.href = "/";

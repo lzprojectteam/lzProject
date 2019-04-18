@@ -5,6 +5,8 @@ import Table from './views/table.vue';
 import ProgressAudit from './views/progressAudit.vue';
 import PersonInfo from './views/personInfo.vue';
 import Home from './views/home.vue';
+import router from '@/router';
+
 Vue.use(Router);
 
 export default new Router({
@@ -37,5 +39,9 @@ export default new Router({
             name: 'personInfo',
             component: PersonInfo
         }
+        // {
+        //     path: '*',
+        //     redirect: '/'
+        // }
     ]
 });
