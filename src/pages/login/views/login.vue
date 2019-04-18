@@ -1,62 +1,21 @@
 <template>
-  <div>
-    <div class="header Cgreen">
-      <div class="wrapper clearfix">
-
-        <span class="QRspan">
-
-        </span>
+  <div class="loginPage">
+    <h1 class="loginTitle">中国烟草</h1>
+    <div class="login">
+      <div class="loginUser">
+        <label class="user">账号：</label>
+        <input type="text"
+               v-model="username" />
       </div>
-    </div>
-    <div class="loginContent">
-      <div class="wrapper">
-        <img class="bg1"
-             src="./../style/css/bg1.png" />
-        <div class="loginBox">
-          <div class="logo"></div>
-          <div class="formDiv">
-            <form action=""
-                  method="post">
-              <label class="user">
-                <input type="text"
-                       v-model="username"
-                       placeholder="请输入用户名" />
-                <i class="iconfont">&#xe614;</i>
-              </label>
-              <label class="pwd">
-                <input type="password"
-                       v-model="password"
-                       placeholder="请输入密码" />
-                <i class="iconfont">&#xe615;</i>
-              </label>
-              <div class="pwdOper">
-                <span class="remember">
-                  <label>
-                    <input type="checkbox"
-                           class="hide"
-                           v-model="remember" />
-                    <span class="checkbox"></span>
-                    记住用户名
-                  </label>
-                </span>
-                <a class="forget Cred"
-                   href="javascript();">忘记密码?</a>
-              </div>
-              <a href="javascript:;"
-                 class="submit"
-                 @click="onLoginClick">登 录</a>
-              <canvas id="canvas"
-                      style="height: 100px !important;width:100px !important;margin-top:-60px; margin-left: -650px;">凉烟生产</canvas>
 
-            </form>
-          </div>
-        </div>
+      <div class="loginPassord">
+        <label class="pwd">密码：</label>
+        <input type="password"
+               v-model="password" />
       </div>
-    </div>
-    <div class="footer">
-      <div class="wrapper">
-        <span>Copyright © 2005-2018 www.casit.com.cn 版权所有 </span>
-      </div>
+
+      <button class="submit"
+              @click="onLoginClick">登录和绑定</button>
     </div>
   </div>
 </template>
@@ -67,10 +26,11 @@ import { setUser, getUser, setFiled } from "@/utils/userUtils";
 import { setToken } from "@/utils/cookieUtils";
 import Vue from "vue";
 import { default as apiUser } from "@/api/base/apiUser";
-import QRCode from "qrcode";
 import app from "@/store/modules/core/app";
 import { getModule } from "vuex-module-decorators";
 import util from "../../../utils/util";
+import apiSsoUser from "../api/apiSsoUser";
+import store from "@/store/index";
 
 export default Vue.extend({
   name: "login",
@@ -88,23 +48,13 @@ export default Vue.extend({
     let user = getUser();
     this.remember = user.remember;
     this.username = user.username;
-    this.seqrcode();
   },
   components: {},
   methods: {
-    seqrcode() {
-      var canvas = document.getElementById("canvas");
-      QRCode.toCanvas(
-        canvas,
-        window.location.origin + "/upload/app/" + process.env.VUE_APP_APK_NAME,
-        function(error: any) {
-          if (error) console.error(error);
-          console.log("QRCode success!");
-        }
-      );
-    },
     onLoginClick() {
       let that = this;
+      this.username = "casuser";
+      this.password = "1";
       if (
         util.isNullOrEmpty(this.username) ||
         util.isNullOrEmpty(this.password)
@@ -120,15 +70,30 @@ export default Vue.extend({
         .loginByUserName(this.username, this.password)
         .then((response: any) => {
           let user = getUser();
-          user.remember = that.remember;
-          if (this.remember) {
-            user.username = that.username;
-          } else {
-            user.username = "";
-          }
+          // user.remember = that.remember;
+          // if (this.remember) {
+          //   user.username = that.username;
+          // } else {
+          //   user.username = "";
+          // }
           setUser(user);
           setToken(response.token);
-          window.location.href = "/";
+          apiUser.getUserDetail("8003").then(userInfo => {
+            apiSsoUser
+              .binding(userInfo.id, "00000")
+              .then(res => {
+                alert(3);
+                console.log(res);
+                if (res !== null) {
+                  window.location.href = "/";
+                } else {
+                  alert("ssss");
+                }
+              })
+              .catch(err => {
+                window.location.href = "/";
+              });
+          });
         })
         .catch(error => {
           if (error.response.data.code === "400") {
@@ -151,5 +116,40 @@ export default Vue.extend({
 });
 </script>
 <style  scoped >
-@import "../style/css/base.scss";
+.loginPage {
+  padding: 20vh 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.loginTitle {
+  font-weight: 1200;
+  font-size: 34px;
+  margin-bottom: 15px;
+}
+input {
+  border: solid rgb(179, 176, 176) 1px;
+  border-radius: 2px;
+  box-shadow: 0 0 1px;
+}
+.login {
+  position: relative;
+  font-size: 14px;
+}
+.loginPassord,
+.loginUser {
+  margin: 15px 0;
+}
+.submit {
+  background-color: rgb(25, 25, 236);
+  color: white;
+  border-radius: 4px;
+  position: absolute;
+  width: 100%;
+  left: 50%;
+  margin-left: -50%;
+  text-align: center;
+  padding: 4px 0;
+  margin-top: 20px;
+}
 </style>

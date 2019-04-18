@@ -10,11 +10,13 @@ Vue.use(Element, {
     zIndex: 3000
 });
 import { default as util } from '@/utils/util';
-import { getToken } from '@/utils/cookieUtils';
+import { set, getToken, setToken } from '@/utils/cookieUtils';
 import { getUser, setUser } from '@/utils/userUtils';
 Vue.config.productionTip = false;
 import { Loading } from 'element-ui';
 import apiUser from '@/api/base/apiUser';
+import apiSsoUser from './pages/login/api/apiSsoUser';
+
 new Vue({
     store,
     router,
@@ -44,13 +46,34 @@ new Vue({
             console.log('检测到令牌');
             //如果token有效，获取跳转界面，然后跳转界面
             let user = getUser();
+            this.bindDing();
             this.loadSystem(user);
+            window.location.href = '/tobacco';
         } else {
             //如果token不存在，则跳转到登陆界面
             window.location.href = '/login.html';
         }
     },
     methods: {
+        //获取钉钉的用户信息
+        bindDing() {
+            return apiSsoUser
+                .getSsoUserByDingId('0458406338841607')
+                .then(res => {
+                    if (res === null) {
+                        window.location.href = '/login.html';
+                    } else {
+                        apiUser.getToken().then(response => {
+                            setToken(response.token);
+                            // setUser(res);
+                            set('userInfo', JSON.stringify(res));
+                            console.log(res);
+
+                            window.location.href = '/tobacco';
+                        });
+                    }
+                });
+        },
         //获取系统信息
         async loadSystem(userData: any) {
             //获取系统列表
