@@ -77,9 +77,9 @@ export default Vue.extend({
             apiSsoUser
               .binding(userInfo.id, "00000")
               .then(res => {
-                console.log(res);
                 if (res !== null) {
-                  window.location.href = "/";
+                  this.$router.replace({ name: "tobacco" });
+                  // window.location.href = "/tobacco";
                 } else {
                   alert("ssss");
                 }

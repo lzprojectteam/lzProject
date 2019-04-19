@@ -29,6 +29,7 @@ import apiSsoUser from "../../../pages/login/api/apiSsoUser";
 import { set, getToken, setToken, removeToken } from "@/utils/cookieUtils";
 import { getUser, setUser } from "@/utils/userUtils";
 import Vue from "vue";
+import { Dialog } from "vant";
 export default {
   data() {
     return {};
@@ -46,10 +47,19 @@ export default {
   methods: {
     onUnbindClick() {
       apiSsoUser.unBind(this.userInfo.id).then(res => {
-        setUser(); //清空存储的user信息
-        removeToken(); //清除缓存的token信息
-        window.location.href = "/login.html";
-        // this.$router.replace({ path: "/login" });
+        Dialog.confirm({
+          title: "解绑提示",
+          message: "确定解除绑定？"
+        })
+          .then(() => {
+            setUser(); //清空存储的user信息
+            removeToken(); //清除缓存的token信息
+            window.location.href = "/login.html";
+            // this.$router.replace({ path: "/login" });
+          })
+          .catch(() => {
+            // on cancel
+          });
       });
     },
     onClickLeft() {

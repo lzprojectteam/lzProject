@@ -1,12 +1,13 @@
 <template>
   <div>
-    this is table
+    <!-- <list></list> -->
   </div>
 </template>
 
 
 <script lang="ts">
 import Vue from "vue";
+import List from "../components/list.vue";
 export default Vue.extend({
   data() {
     return {};
@@ -16,7 +17,9 @@ export default Vue.extend({
     this.$emit("bindActive", to.path);
     next();
   },
-  components: {},
+  components: {
+    list: List
+  },
   methods: {}
 });
 </script>

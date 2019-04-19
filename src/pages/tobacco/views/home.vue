@@ -8,7 +8,10 @@
       <van-icon name="manager-o"
                 slot="right" />
     </van-nav-bar>
-    <router-view @bindActive="bindActive"></router-view>
+    <keep-alive>
+      <router-view @bindActive="bindActive"></router-view>
+    </keep-alive>
+
     <van-tabbar v-model="active"
                 @change="switchItem(active)">
       <van-tabbar-item v-for="item in navTitles"
@@ -44,7 +47,6 @@ export default Vue.extend({
   },
   methods: {
     bindActive(path: String) {
-      console.log(path);
       this._changeActive(path);
     },
     onClickRight() {

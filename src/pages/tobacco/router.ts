@@ -15,7 +15,7 @@ export default new Router({
             path: '/',
             name: 'tobacco',
             component: Home,
-            redirect: '/progressAudit',
+            redirect: '/task',
             children: [
                 {
                     path: '/task',
@@ -39,9 +39,5 @@ export default new Router({
             name: 'personInfo',
             component: PersonInfo
         }
-        // {
-        //     path: '*',
-        //     redirect: '/'
-        // }
     ]
 });
