@@ -46,7 +46,7 @@ new Vue({
             console.log('检测到令牌');
             //如果token有效，获取跳转界面，然后跳转界面
             // let user = getUser();
-            this.bindDing();
+            // this.bindDing();
             // this.loadSystem(user);
             window.location.href = '/tobacco';
         } else {
@@ -56,20 +56,20 @@ new Vue({
     },
     methods: {
         //获取钉钉的用户信息
-        bindDing() {
-            return apiSsoUser
-                .getSsoUserByDingId('0458406338841607')
-                .then(res => {
-                    if (res === null) {
-                        window.location.href = '/login.html';
-                    } else {
-                        apiUser.getToken().then(response => {
-                            setToken(response.token);
-                            window.location.href = '/tobacco';
-                        });
-                    }
-                });
-        },
+        // bindDing() {
+        //     return apiSsoUser
+        //         .getSsoUserByDingId('0458406338841607')
+        //         .then(res => {
+        //             if (res === null) {
+        //                 window.location.href = '/login.html';
+        //             } else {
+        //                 apiUser.getToken().then(response => {
+        //                     setToken(response.token);
+        //                     window.location.href = '/tobacco';
+        //                 });
+        //             }
+        //         });
+        // },
         //获取系统信息
         async loadSystem(userData: any) {
             //获取系统列表

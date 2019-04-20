@@ -5,8 +5,9 @@
       <div class="item"
            v-for="(item,index) in listData"
            :key="item.id"
-           v-if="index < currenNum">
-        <img src="../icons/icon_func_group.png"
+           v-if="index < currenNum"
+           @click="showDetail(item.id)">
+        <img src="../icons/icon_project_note.png"
              alt="">
         <p class="discription">{{item.title}}</p>
       </div>
@@ -24,6 +25,7 @@
 </template>
 
 <script>
+import apiProcessData from "../api/apiProcessData";
 export default {
   data() {
     return {
@@ -37,6 +39,13 @@ export default {
     this.currenNum = this.num;
   },
   methods: {
+    showDetail(id) {
+      apiProcessAttr.getProcessAttrList(id).then(res => {
+        console.log(res);
+        // this.normalizeData
+        this.$router.push("./taskDetail");
+      });
+    },
     getMore() {
       this.currenNum = this.listData.length;
     },
@@ -60,7 +69,6 @@ export default {
     flex-wrap: wrap;
     padding-top: 10px;
     .item {
-      width: calc(33% - 10);
       margin: 10px 0;
       display: flex;
       flex-direction: column;
@@ -74,7 +82,6 @@ export default {
     }
     .more,
     .less {
-      width: calc(33% - 10);
       padding: 30px;
       display: flex;
       flex-direction: column;

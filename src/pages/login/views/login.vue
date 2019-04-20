@@ -78,8 +78,8 @@ export default Vue.extend({
               .binding(userInfo.id, "00000")
               .then(res => {
                 if (res !== null) {
-                  this.$router.replace({ name: "tobacco" });
-                  // window.location.href = "/tobacco";
+                  // this.$router.go("/tobacco");
+                  window.location.href = "/tobacco";
                 } else {
                   alert("ssss");
                 }
