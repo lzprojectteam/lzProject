@@ -11,6 +11,13 @@ export default Vue.extend({
   data() {
     return {};
   },
+  beforeRouteEnter(to, from, next) {
+    console.log(to.params.taskItemsId);
+    next();
+  },
+  // created() {
+  //   console.log(this.$router.history.current.params.id);
+  // },
   mounted() {},
   methods: {}
 });

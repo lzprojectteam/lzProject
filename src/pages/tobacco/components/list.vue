@@ -6,7 +6,7 @@
            v-for="(item,index) in listData"
            :key="item.id"
            v-if="index < currenNum"
-           @click="showDetail(item.id)">
+           @click="showTaskItems(item.id)">
         <img src="../icons/icon_project_note.png"
              alt="">
         <p class="discription">{{item.title}}</p>
@@ -39,12 +39,8 @@ export default {
     this.currenNum = this.num;
   },
   methods: {
-    showDetail(id) {
-      apiProcessAttr.getProcessAttrList(id).then(res => {
-        console.log(res);
-        // this.normalizeData
-        this.$router.push("./taskDetail");
-      });
+    showTaskItems(taskItemsId) {
+      this.$router.push({ name: "taskItems", params: { taskItemsId } });
     },
     getMore() {
       this.currenNum = this.listData.length;

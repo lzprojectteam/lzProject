@@ -4,7 +4,7 @@ import Task from './views/task.vue';
 import Table from './views/table.vue';
 import ProgressAudit from './views/progressAudit.vue';
 import PersonInfo from './views/personInfo.vue';
-import TaskDetail from './views/taskDetail.vue';
+import TaskItems from './views/taskItems.vue';
 import Home from './views/home.vue';
 import router from '@/router';
 
@@ -41,9 +41,9 @@ export default new Router({
             component: PersonInfo
         },
         {
-            path: '/taskDetail',
-            name: 'taskDetail',
-            component: TaskDetail
+            path: '/taskItems',
+            name: 'taskItems',
+            component: TaskItems
         }
     ]
 });
