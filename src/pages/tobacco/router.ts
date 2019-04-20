@@ -1,10 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Task from './views/task.vue';
-import Table from './views/table.vue';
-import ProgressAudit from './views/progressAudit.vue';
+import Task from './components/task.vue';
+import Table from './components/table.vue';
+import ProgressAudit from './components/progressAudit.vue';
 import PersonInfo from './views/personInfo.vue';
 import TaskItems from './views/taskItems.vue';
+import TaskItemPage from './views/taskItemPage.vue';
 import Home from './views/home.vue';
 import router from '@/router';
 
@@ -44,6 +45,11 @@ export default new Router({
             path: '/taskItems',
             name: 'taskItems',
             component: TaskItems
+        },
+        {
+            path: '/taskItemPage',
+            name: 'taskItemPage',
+            component: TaskItemPage
         }
     ]
 });

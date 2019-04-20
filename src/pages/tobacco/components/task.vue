@@ -22,7 +22,7 @@ import List from "../components/list.vue";
 import apiProcess from "../api/apiProcess";
 import { getUser, setUser } from "@/utils/userUtils";
 import apiProcessAttr from "../api/apiProcessAttr";
-import deepClone from "../mixin/deepClone";
+import deepClone from "../utils/deepClone";
 import { Loading } from "vant";
 export default Vue.extend({
   data() {
@@ -95,6 +95,9 @@ export default Vue.extend({
     let user = getUser();
     let that = this;
     apiProcess.showIndexList(user.organizationId).then(indexList => {
+      console.log(indexList);
+
+      this.$store.commit("INDEXLIST", indexList);
       that.taskData.fixedTaskList = indexList.fixedTaskList;
       this.showfixedTask = true;
       indexList.fixedTaskList.forEach(item => {
@@ -109,6 +112,12 @@ export default Vue.extend({
           this.normalizeFixedTaskData.push(tempData);
         });
       });
+      console.log(this.normalizeFixedTaskData);
+
+      this.$store.commit(
+        "NORMALIZE_FIXEDTASKDATA",
+        this.normalizeFixedTaskData
+      );
     });
   },
   beforeRouteLeave(to, from, next) {

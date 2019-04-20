@@ -1,29 +1,85 @@
 <template>
   <div>
-    TaskDetail
+    <div class="header-fixed">
+      <van-nav-bar :title="taskItemsData && taskItemsData.title"
+                   left-text="返回"
+                   left-arrow
+                   @click-left="onClickLeft">
+      </van-nav-bar>
+      <van-button type="primary"
+                  size="large">+新增填报</van-button>
+      <div class="label">填报历史</div>
+    </div>
+    <keep-alive>
+      <scroll class="taskItems-wrapper">
+        <div class="taskItems">
+          <task-item v-for="(taskItem, index ) in  taskItemsData && taskItemsData.dataItemEntityList"
+                     :key="index"
+                     :taskItem="taskItem"
+                     :taskItemsTitle="taskItemsData.title"></task-item>
+        </div>
+      </scroll>
+    </keep-alive>
+
   </div>
 </template>
 
 
-<script lang="ts">
+<script>
 import Vue from "vue";
+import TaskItem from "../components/taskItem.vue";
+import Scroll from "../components/scroll.vue";
+import { mapMutations } from "Vuex";
 export default Vue.extend({
   data() {
-    return {};
+    return {
+      taskItemsData: {}
+    };
   },
-  beforeRouteEnter(to, from, next) {
-    console.log(to.params.taskItemsId);
-    next();
+  components: {
+    "task-item": TaskItem,
+    scroll: Scroll
   },
-  // created() {
-  //   console.log(this.$router.history.current.params.id);
-  // },
+  created() {
+    let taskItemsId = this.$route.params.taskItemsId;
+    // if (!taskItemsId) {
+    //   this.$router.replace("./");
+    // }
+    this.$store.commit("TASKITEMSDATA", taskItemsId);
+    this.taskItemsData = this.$store.state.taskItemsData;
+  },
   mounted() {},
-  methods: {}
+  methods: {
+    onClickLeft() {
+      this.$router.go(-1);
+    }
+  }
 });
 </script>
-<style  scoped >
-@import "../style/css/base.scss";
+<style  scoped lang=scss>
+.header-fixed {
+  position: fixed;
+  width: 100%;
+  background-color: white;
+  .label {
+    padding: 15px;
+    font-size: 16px;
+    font-weight: 600;
+    border-bottom: solid gray 1px;
+  }
+}
+.taskItems-wrapper {
+  position: absolute;
+  width: 100%;
+  top: 143px;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.taskItems {
+  position: absolute;
+  width: 100%;
+}
 </style>
 
 
