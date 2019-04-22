@@ -1,6 +1,22 @@
 <template>
-  <div>
-    progress
+  <div class="checkIndex">
+    <van-tabs color='gray'
+              type="card">
+      <van-tab>
+        <div slot="title">
+          待审核 <i class="num">3</i>
+        </div>
+        <div class="checkLater">
+
+        </div>
+      </van-tab>
+      <van-tab>
+        <div slot="title">
+          审核历史 <i class="num">3</i>
+        </div>
+        <div class="checkHistory">sdfsf</div>
+      </van-tab>
+    </van-tabs>
   </div>
 </template>
 
@@ -24,20 +40,20 @@ export default {
   }
 };
 </script>
-<style  scoped >
-a {
-  position: relative;
-  display: inline-block;
-  height: 42px;
-  line-height: 42px;
-  width: 220px;
-  color: #ffffff;
-  border: 1px solid orange;
-  background: orange;
-  border-radius: 4px;
-  text-align: center;
-  margin-top: 20px;
-  left: calc(50% - 110px);
+<style  scoped lang="scss" >
+.checkIndex {
+  margin-top: 10px;
+  .checkLater,
+  .checkHistory {
+    margin-top: 10px;
+  }
+  .num {
+    font-size: 12px;
+    color: bisque;
+    background-color: rgb(146, 62, 62);
+    border-radius: 50%;
+    padding: 3px 7px;
+  }
 }
 </style>
 

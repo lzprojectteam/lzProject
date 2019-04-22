@@ -42,7 +42,7 @@ export default new Router({
             component: PersonInfo
         },
         {
-            path: '/taskItems',
+            path: '/taskItems', //’新增填报 展示填报历史‘页面
             name: 'taskItems',
             component: TaskItems
         },

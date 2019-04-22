@@ -7,6 +7,7 @@
                    @click-left="onClickLeft">
       </van-nav-bar>
       <van-button type="primary"
+                  @click="goToAddPage"
                   size="large">+新增填报</van-button>
       <div class="label">填报历史</div>
     </div>
@@ -23,8 +24,6 @@
 
   </div>
 </template>
-
-
 <script>
 import Vue from "vue";
 import TaskItem from "../components/taskItem.vue";
@@ -45,11 +44,14 @@ export default Vue.extend({
     // if (!taskItemsId) {
     //   this.$router.replace("./");
     // }
-    this.$store.commit("TASKITEMSDATA", taskItemsId);
-    this.taskItemsData = this.$store.state.taskItemsData;
+    this.$store.commit("tobacco/TASKITEMSDATA", taskItemsId);
+    this.taskItemsData = this.$store.state.tobacco[
+      "taskItemsData" + taskItemsId
+    ];
   },
   mounted() {},
   methods: {
+    goToAddPage() {},
     onClickLeft() {
       this.$router.go(-1);
     }

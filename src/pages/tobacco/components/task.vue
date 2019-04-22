@@ -11,7 +11,7 @@
           title="固化任务"
           num=5
           icon="../icons/icon_func_group.png"
-          :listData="normalizeFixedTaskData"></list>
+          :listData="taskData.fixedTaskList"></list>
   </div>
 </template>
 
@@ -31,7 +31,7 @@ export default Vue.extend({
         fixedTaskList: []
       },
       showfixedTask: false,
-      tempData: {
+      tempDataFixedTask: {
         altitude: 0,
         amount: 0,
         area: 0,
@@ -87,37 +87,47 @@ export default Vue.extend({
         updatedDate: "2019-04-19T11:31:49.170Z",
         version: 0,
         year: 0
-      },
-      normalizeFixedTaskData: []
+      }, // fixedTaskList标准格式
+      tempDataAttr: {
+        attrId: 0,
+        createBy: "string",
+        createdDate: "2019-04-19T11:31:49.170Z",
+        dataType: "string",
+        deleteBy: "string",
+        deleteDate: "2019-04-19T11:31:49.170Z",
+        desc: "string",
+        display: "string",
+        flag: "string",
+        id: "string",
+        label: "string",
+        point: 0,
+        processDataId: "string",
+        processId: 0,
+        receive: "2019-04-19T11:31:49.170Z",
+        send: 0,
+        times: 0,
+        updateBy: "string",
+        updatedDate: "2019-04-19T11:31:49.170Z",
+        valueBool: true,
+        valueDate: "2019-04-19T11:31:49.170Z",
+        valueDouble: 0,
+        valueInt: 0,
+        valueLong: 0,
+        valueText: "string",
+        version: 0
+      }, // dataItemEntityList标准格式
+      normalizeFixedTaskData: [] //用于提交的数据格式
     };
   },
   created() {
     let user = getUser();
     let that = this;
     apiProcess.showIndexList(user.organizationId).then(indexList => {
-      console.log(indexList);
-
-      this.$store.commit("INDEXLIST", indexList);
       that.taskData.fixedTaskList = indexList.fixedTaskList;
+      this._normalizeFixedTaskData(indexList.fixedTaskList);
+      this.$store.commit("tobacco/INDEXLIST", indexList);
+      console.log(indexList);
       this.showfixedTask = true;
-      indexList.fixedTaskList.forEach(item => {
-        apiProcessAttr.getProcessAttrList(item.id).then(attrList => {
-          let tempData = deepClone(Object.assign({}, this.tempData, item));
-          for (var prop in tempData) {
-            if (prop in this.tempData === false) {
-              delete tempData[prop];
-            }
-          }
-          tempData.dataItemEntityList = attrList;
-          this.normalizeFixedTaskData.push(tempData);
-        });
-      });
-      console.log(this.normalizeFixedTaskData);
-
-      this.$store.commit(
-        "NORMALIZE_FIXEDTASKDATA",
-        this.normalizeFixedTaskData
-      );
     });
   },
   beforeRouteLeave(to, from, next) {
@@ -127,7 +137,37 @@ export default Vue.extend({
   components: {
     list: List
   },
-  methods: {}
+  methods: {
+    //格式化固化任务数据并存储到vuex中
+    _normalizeFixedTaskData(fixedTaskList) {
+      fixedTaskList.forEach(item => {
+        apiProcessAttr.getProcessAttrList(item.id).then(attrList => {
+          let dealedAttrList = attrList.map(attrItem => {
+            return this._mergeObj(this.tempDataAttr, attrItem);
+          });
+          let tempData = this._mergeObj(this.tempDataFixedTask, item);
+          tempData.dataItemEntityList = dealedAttrList;
+          this.normalizeFixedTaskData.push(tempData);
+        });
+      });
+      console.log(this.normalizeFixedTaskData);
+
+      this.$store.commit(
+        "tobacco/NORMALIZE_FIXEDTASKDATA",
+        this.normalizeFixedTaskData
+      );
+    },
+    // 将obj2的属性值赋值给obj1中,并将obj1中有obj2中的属性删除
+    _mergeObj(obj1, obj2) {
+      let tempObj = deepClone(Object.assign({}, obj1, obj2));
+      for (var prop in tempObj) {
+        if (prop in obj1 === false) {
+          delete tempObj[prop];
+        }
+      }
+      return tempObj;
+    }
+  }
 });
 </script>
 <style  scoped >

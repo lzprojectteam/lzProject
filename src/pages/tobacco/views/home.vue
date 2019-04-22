@@ -34,10 +34,10 @@ export default Vue.extend({
       active: 2,
       titleName: "个人中心",
       navTitles: [
-        { titleName: "报表", titleIcon: "description", id: 0, path: "/table" },
-        { titleName: "任务", titleIcon: "records", id: 1, path: "/task" },
+        { titleName: "任务", titleIcon: "records", id: 0, path: "/task" },
+        { titleName: "报表", titleIcon: "description", id: 1, path: "/table" },
         {
-          titleName: "进度审核",
+          titleName: "填报审核",
           titleIcon: "sign",
           id: 2,
           path: "/progressAudit"
@@ -71,6 +71,8 @@ export default Vue.extend({
     }
   },
   mounted() {
+    console.log(this.$store);
+
     let temArr = window.location.href.split("/");
     let path = "/" + temArr[temArr.length - 1];
     this._changeActive(path);

@@ -72,6 +72,11 @@ export default Vue.extend({
           let user = getUser();
           setToken(response.token);
           apiUser.getUserDetail("8003").then(userInfo => {
+            console.log(userInfo);
+            for (var prop in userInfo) {
+              console.log(prop + ": " + userInfo[prop]);
+            }
+            alert("sd");
             setUser(userInfo);
             let userInfos = getUser();
             apiSsoUser
